@@ -2,7 +2,7 @@ import axios, { type AxiosError, type AxiosResponse, type InternalAxiosRequestCo
 import { handleApiError } from './errors';
 
 const DEFAULT_TIMEOUT = 5000;
-const BASE_URL = 'https://api.openweathermap.org/data/2.5';
+const BASE_URL = 'https://api.openweathermap.org';
 const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 
 export const apiClient = axios.create({
