@@ -3,11 +3,16 @@
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "target": "ES2022",
     "useDefineForClassFields": true,
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "lib": [
+      "ES2022",
+      "DOM",
+      "DOM.Iterable"
+    ],
     "module": "ESNext",
-    "types": ["vite/client"],
+    "types": [
+      "vite/client"
+    ],
     "skipLibCheck": true,
-
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
@@ -15,12 +20,24 @@
     "moduleDetection": "force",
     "noEmit": true,
     "jsx": "react-jsx",
-
     /* Path mapping */
     "paths": {
-      "@shared/*": ["./src/shared/*"]
+      "@shared/*": [
+        "./src/shared/*"
+      ],
+      "@widgets/*": [
+        "./src/widgets/*"
+      ],
+      "@features/*": [
+        "./src/features/*"
+      ],
+      "@entities/*": [
+        "./src/entities/*"
+      ],
+      "@pages/*": [
+        "./src/pages/*"
+      ]
     },
-
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
@@ -29,5 +46,7 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src"]
+  "include": [
+    "src"
+  ]
 }
