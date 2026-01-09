@@ -1,6 +1,7 @@
 import type { District, DistrictSearchResult } from '../model/types';
 import { loadDistricts } from './loadDistricts';
 import { isEmptyString } from '@shared/lib/string';
+import { getChoseong } from 'es-hangul';
 
 export const searchDistricts = (
     query: string,
@@ -8,64 +9,55 @@ export const searchDistricts = (
 ): DistrictSearchResult => {
     const normalizedQuery = query.trim();
     if (isEmptyString(normalizedQuery)) {
-        return {
-            districts: [],
-            query: normalizedQuery,
-        };
+        return { districts: [], query: normalizedQuery };
     }
 
     const districts = loadDistricts();
 
-    const matched = districts.filter((district) =>
-        district.fullName.includes(normalizedQuery)
-    );
+    // 초성 검색 여부 판단
+    const isChoseongQuery = !/[가-힣]/.test(normalizedQuery);
 
-    // 정확도 순으로 정렬
+    const matched = districts.filter((district) => {
+        if (isChoseongQuery) {
+            return getChoseong(district.fullName).includes(normalizedQuery);
+        }
+
+        return district.fullName.includes(normalizedQuery);
+    });
+
     const sorted = matched.sort((a, b) => {
-        // 1. 정확히 일치하는 경우
-        if (a.fullName === normalizedQuery) {
-            return -1;
-        }
-        if (b.fullName === normalizedQuery) {
-            return 1;
+        // 1. 전체 이름 정확히 일치
+        if (a.fullName === normalizedQuery) return -1;
+        if (b.fullName === normalizedQuery) return 1;
+
+        // 2. 완전 일치하는 경우 - 일반 검색
+        if (!isChoseongQuery) {
+            const aMatch = isUnitMatch(a, normalizedQuery);
+            const bMatch = isUnitMatch(b, normalizedQuery);
+            if (aMatch && !bMatch) return -1;
+            if (!aMatch && bMatch) return 1;
         }
 
-        // 2. 완전 일치하는 경우 우선
-        const aIsUnitMatch = isUnitMatch(a, normalizedQuery);
-        const bIsUnitMatch = isUnitMatch(b, normalizedQuery);
-        if (aIsUnitMatch && !bIsUnitMatch) {
-            return -1;
-        }
-        if (!aIsUnitMatch && bIsUnitMatch) {
-            return 1;
-        }
+        // 3. 비교 대상 설정
+        const targetA = isChoseongQuery ? getChoseong(a.fullName) : a.fullName;
+        const targetB = isChoseongQuery ? getChoseong(b.fullName) : b.fullName;
 
-        // 3. 시작 부분이 일치하는 경우
-        if (a.fullName.startsWith(normalizedQuery)) {
-            return -1;
-        }
-        if (b.fullName.startsWith(normalizedQuery)) {
-            return 1;
-        }
+        // 4. 시작 부분이 일치하는 경우
+        const aStarts = targetA.startsWith(normalizedQuery);
+        const bStarts = targetB.startsWith(normalizedQuery);
+        if (aStarts && !bStarts) return -1;
+        if (!aStarts && bStarts) return 1;
 
-        // 4. 길이가 짧은 것 우선(상위 행정구역일 확률 높음)
+        // 5. 길이가 짧은 것 우선
         return a.fullName.length - b.fullName.length;
     });
 
-    const sliced = sorted.slice(0, limit);
     return {
-        districts: sliced,
+        districts: sorted.slice(0, limit),
         query: normalizedQuery,
     };
 };
 
-/**
- * 행정구역 단위(단어) 완전 일치 여부 확인
- * e.g. '신사동'이라고 검색했을 때, '신사동 고개'가 아닌 '신사동'이 우선되도록
- * @param district - 행정구역 정보
- * @param query - 검색어
- * @returns 완전 일치 여부
- */
 const isUnitMatch = (district: District, query: string): boolean => {
     return (
         district.siDo === query ||
