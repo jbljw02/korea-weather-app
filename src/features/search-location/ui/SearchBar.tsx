@@ -7,9 +7,11 @@ interface SearchBarProps {
     onSearch: (query: string) => void;
     suggestions?: Array<{ fullName: string; displayName: string }>;
     onSelectSuggestion: (suggestion: { fullName: string; displayName: string }) => void;
+    favorites?: Set<string>;
+    onToggleFavorite?: (suggestion: { fullName: string; displayName: string }) => void;
 }
 
-export const SearchBar = ({ onSearch, onSelectSuggestion }: SearchBarProps) => {
+export const SearchBar = ({ onSearch, onSelectSuggestion, favorites, onToggleFavorite }: SearchBarProps) => {
     const {
         query,
         setQuery,
@@ -51,7 +53,9 @@ export const SearchBar = ({ onSearch, onSelectSuggestion }: SearchBarProps) => {
             {showSuggestions && (
                 <SearchedSuggestions
                     suggestions={searchResults}
+                    favorites={favorites}
                     onSelect={handleSelectSuggestion}
+                    onToggleFavorite={onToggleFavorite}
                 />
             )}
         </div>
