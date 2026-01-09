@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef } from 'react';
+import { useState, useMemo, useRef, useEffect } from 'react';
 import { searchDistricts } from '@entities/district/lib';
 import { isEmptyArray } from '@shared/lib/type-guards';
 import { isEmptyString } from '@shared/lib/string';
@@ -14,22 +14,39 @@ interface UseDistrictSearchProps {
 
 export const useDistrictSearch = ({ onSelectSuggestion }: UseDistrictSearchProps) => {
     const [query, setQuery] = useState('');
+    const [debouncedQuery, setDebouncedQuery] = useState('');
     const [isFocused, setIsFocused] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
 
-    const searchResults = useMemo(() => {
+    useEffect(() => {
         const normalizedQuery = query.trim();
+        if (isEmptyString(normalizedQuery)) {
+            setDebouncedQuery('');
+            return;
+        }
+
+        const timer = setTimeout(() => {
+            setDebouncedQuery(query);
+        }, 300);
+
+        return () => {
+            clearTimeout(timer);
+        };
+    }, [query]);
+
+    const searchResults = useMemo(() => {
+        const normalizedQuery = debouncedQuery.trim();
         if (isEmptyString(normalizedQuery)) {
             return [];
         }
 
-        const result = searchDistricts(query, 10);
+        const result = searchDistricts(debouncedQuery, 10);
         const districts = result.districts.map((district) => ({
             fullName: district.fullName,
             displayName: district.fullName.replace(/-/g, ' '),
         }));
         return districts;
-    }, [query]);
+    }, [debouncedQuery]);
 
     const handleSelectSuggestion = (suggestion: DistrictSuggestion) => {
         onSelectSuggestion(suggestion);
