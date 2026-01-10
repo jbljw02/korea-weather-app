@@ -1,6 +1,6 @@
 import { isNil, isNotNil } from "@shared/lib/type-guards";
 import { useQuery } from "@tanstack/react-query";
-import { getLocationByCoordinates } from "../api";
+import { getLocationByCoordinates } from "..";
 
 const UNKNOWN_LOCATION_NAME = '알 수 없는 위치';
 

@@ -16,7 +16,7 @@ export interface DistrictSearchResult {
     query: string;
 }
 
-export interface DistrictSearchResult {
-    districts: District[];
-    query: string;
+export interface DistrictSuggestion {
+    fullName: string;
+    displayName: string;
 }

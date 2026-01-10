@@ -7,7 +7,7 @@ import { QueryProvider } from './app/providers/QueryProvider'
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryProvider>
-      <App />
+    <App />
     </QueryProvider>
   </StrictMode>,
 )

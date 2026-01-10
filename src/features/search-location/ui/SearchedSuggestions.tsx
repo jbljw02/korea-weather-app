@@ -1,9 +1,5 @@
 import { FavoriteIcon } from '@shared/ui/icon/FavoriteIcon';
-
-interface DistrictSuggestion {
-    fullName: string;
-    displayName: string;
-}
+import type { DistrictSuggestion } from '@entities/district';
 
 interface SearchedSuggestionsProps {
     suggestions: DistrictSuggestion[];
@@ -20,14 +16,16 @@ export const SearchedSuggestions = ({
 }: SearchedSuggestionsProps) => {
     const handleFavoriteClick = (e: React.MouseEvent, suggestion: DistrictSuggestion) => {
         e.stopPropagation();
-        onToggleFavorite?.(suggestion);
+        if (onToggleFavorite) {
+            onToggleFavorite(suggestion);
+        }
     };
 
     return (
         <div className="absolute top-full left-0 right-0 max-w-2xl bg-white border border-gray-300 rounded-lg shadow-lg mt-1 max-h-60 overflow-y-auto z-50">
-            {suggestions.map((result, index) => {
+            {suggestions.map((result, _) => {
                 const isFavorite = favorites.has(result.fullName);
-                const key = `${result.fullName}-${index}`;
+                const key = result.fullName;
                 const ariaLabel = isFavorite ? '즐겨찾기 제거' : '즐겨찾기 추가';
                 return (
                     <div

@@ -17,3 +17,20 @@ export function isNotEmptyString(
 ): value is string {
     return value != null && value !== '';
 }
+
+/**
+ * 위치 이름에서 뒤에서 두 번째까지 추출
+ * 예: "서울특별시 성동구 홍익동" -> "성동구 홍익동"
+ * @param location 전체 위치 이름
+ * @returns 뒤에서 두 번째까지의 단어들
+ */
+export const getLastLocationPart = (location: string): string => {
+    const parts = location.trim().split(/\s+/);
+    if (parts.length === 0) {
+        return location;
+    }
+    if (parts.length === 1) {
+        return parts[0];
+    }
+    return parts.slice(-2).join(' ');
+};

@@ -1,8 +1,8 @@
 import { WeatherCard } from '@entities/weather/ui/WeatherCard';
 import { WeatherCardLoading } from '@entities/weather/ui/WeatherCardLoading';
 import { WeatherCardError } from '@entities/weather/ui/WeatherCardError';
-import { useCurrentLocation, useLocationName } from '@entities/location/model';
-import { useCurrentWeather, useForecast } from '@entities/weather/model';
+import { useCurrentLocation, useLocationName } from '@entities/location';
+import { useCurrentWeather, useForecast } from '@entities/weather';
 import { prepareHourlyForecast } from '@entities/weather/lib/prepareHourlyForecast';
 import { isNotNil } from '@shared/lib/type-guards';
 

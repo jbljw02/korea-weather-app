@@ -6,5 +6,5 @@ export type {
     CurrentWeatherResponse,
     ForecastItem,
     ForecastResponse,
-} from './types';
-export { useCurrentWeather, useForecast } from './queries';
+} from './model/types';
+export { useCurrentWeather, useForecast, useFavoriteWeathers } from './model/queries';

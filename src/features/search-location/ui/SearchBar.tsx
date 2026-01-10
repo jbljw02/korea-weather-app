@@ -1,17 +1,17 @@
+import { memo } from 'react';
 import { SearchIcon } from '@shared/ui/icon/SearchIcon';
 import { useDistrictSearch } from '../model/useDistrictSearch';
 import { SearchedSuggestions } from './SearchedSuggestions';
 import { isNotEmptyString } from '@shared/lib/string';
+import type { DistrictSuggestion } from '@entities/district';
 
 interface SearchBarProps {
-    onSearch: (query: string) => void;
-    suggestions?: Array<{ fullName: string; displayName: string }>;
-    onSelectSuggestion: (suggestion: { fullName: string; displayName: string }) => void;
     favorites?: Set<string>;
-    onToggleFavorite?: (suggestion: { fullName: string; displayName: string }) => void;
+    onToggleFavorite?: (suggestion: DistrictSuggestion) => void;
+    onSelectSuggestion: (suggestion: { fullName: string; displayName: string }) => void;
 }
 
-export const SearchBar = ({ onSearch, onSelectSuggestion, favorites, onToggleFavorite }: SearchBarProps) => {
+export const SearchBar = memo(({ favorites, onToggleFavorite, onSelectSuggestion }: SearchBarProps) => {
     const {
         query,
         setQuery,
@@ -29,7 +29,6 @@ export const SearchBar = ({ onSearch, onSelectSuggestion, favorites, onToggleFav
         const normalizedQuery = query.trim();
 
         if (isNotEmptyString(normalizedQuery)) {
-            onSearch(normalizedQuery);
             handleBlur();
         }
     };
@@ -60,4 +59,4 @@ export const SearchBar = ({ onSearch, onSelectSuggestion, favorites, onToggleFav
             )}
         </div>
     );
-};
+});
