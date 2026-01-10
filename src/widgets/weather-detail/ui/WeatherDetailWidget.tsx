@@ -5,8 +5,9 @@ import { DailyForecast } from '@entities/weather/ui/DailyForecast';
 import { useCurrentWeather, useForecast } from '@entities/weather';
 import { prepareHourlyForecast } from '@entities/weather/lib/prepareHourlyForecast';
 import { prepareDailyForecast } from '@entities/weather/lib/prepareDailyForecast';
-import { getFavoriteItems, useFavoriteCoordinates } from '@entities/favorite';
+import { useFavoriteCoordinates } from '@entities/favorite';
 import { isNil, isNotNil } from '@shared/lib/type-guards';
+import { getLastLocationPart } from '@shared/lib/string';
 
 interface WeatherDetailWidgetProps {
     id: string;
@@ -15,8 +16,6 @@ interface WeatherDetailWidgetProps {
 }
 
 export const WeatherDetailWidget = ({ id, lat: initialLat, lon: initialLon }: WeatherDetailWidgetProps) => {
-    const favoriteItems = getFavoriteItems();
-    const favoriteItem = favoriteItems.find((item) => item.id === id || item.fullName === id);
     const coordinates = useFavoriteCoordinates(id, initialLat, initialLon);
 
     const lat = coordinates?.lat ?? initialLat;
@@ -35,19 +34,9 @@ export const WeatherDetailWidget = ({ id, lat: initialLat, lon: initialLon }: We
     } = useForecast(lat, lon);
 
     const isLoading = isNil(coordinates) || isWeatherLoading || isForecastLoading;
-    const hasError = weatherError || forecastError || isNil(favoriteItem);
+    const hasError = weatherError || forecastError;
 
-    const getErrorMessage = () => {
-        if (isNil(favoriteItem)) {
-            return '해당 지역을 찾을 수 없습니다.';
-        }
-        if (weatherError || forecastError) {
-            return '날씨 정보를 가져올 수 없습니다.';
-        }
-        return '알 수 없는 오류가 발생했습니다.';
-    };
-
-    const locationName = favoriteItem?.displayName ?? favoriteItem?.fullName ?? '알 수 없는 지역';
+    const locationName = getLastLocationPart(id.split('-').join(' '));
     const hourlyForecast = prepareHourlyForecast(forecast);
     const dailyForecast = prepareDailyForecast(forecast);
 
@@ -55,15 +44,15 @@ export const WeatherDetailWidget = ({ id, lat: initialLat, lon: initialLon }: We
         <>
             <div className="h-[350px] md:h-[400px]">
                 {isLoading && <WeatherCardLoading />}
-                {hasError && <WeatherCardError message={getErrorMessage()} />}
+                {hasError && <WeatherCardError message='날씨 정보를 가져올 수 없습니다.' />}
                 {!isLoading && !hasError && isNotNil(currentWeather) && (
                     <WeatherCard
                         location={locationName}
                         temperature={Math.round(currentWeather.main.temp)}
                         minTemp={currentWeather.main.temp_min}
                         maxTemp={currentWeather.main.temp_max}
-                        icon={currentWeather.weather[0]?.icon}
-                        description={currentWeather.weather[0]?.description}
+                        icon={currentWeather.weather[0].icon}
+                        description={currentWeather.weather[0].description}
                         hourlyForecast={hourlyForecast}
                     />
                 )}
