@@ -22,6 +22,8 @@ export const FavoriteCardItem = ({ favorite, onCardClick, onToggleFavorite }: Fa
                 <WeatherCard
                     location={favorite.displayName}
                     temperature={favorite.temperature}
+                    minTemp={favorite.minTemp}
+                    maxTemp={favorite.maxTemp}
                     icon={favorite.icon}
                     isFavorite={true}
                     fullName={favorite.fullName}

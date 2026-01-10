@@ -8,6 +8,8 @@ export interface FavoriteItem {
 
 export interface FavoriteLocation extends FavoriteItem {
     temperature?: number;
+    minTemp?: number;
+    maxTemp?: number;
     icon?: string;
     isLoading?: boolean;
 }

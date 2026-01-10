@@ -54,7 +54,7 @@ export const CurrentWeatherWidget = () => {
     const hourlyForecast = prepareHourlyForecast(forecast);
 
     return (
-        <div className="h-[350px] md:h-[400px]">
+        <div className="h-[320px] md:h-[380px]">
             {isLoading && <WeatherCardLoading />}
             {hasError && <WeatherCardError message={getErrorMessage()} />}
             {!isLoading && !hasError && isNotNil(currentWeather) && (

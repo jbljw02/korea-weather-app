@@ -100,7 +100,7 @@ export const WeatherCard = ({
             </div>
 
             {isNotNil(minTemp) && isNotNil(maxTemp) && (
-                <div className="text-sm text-gray-500 mb-6">
+                <div className="text-sm text-gray-500">
                     최저 {Math.round(minTemp)}° 최고 {Math.round(maxTemp)}°
                 </div>
             )}

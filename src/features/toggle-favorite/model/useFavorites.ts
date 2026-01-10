@@ -39,12 +39,16 @@ export const useFavorites = () => {
             }
 
             const temperature = Math.round(weatherData.main.temp);
+            const minTemp = Math.round(weatherData.main.temp_min);
+            const maxTemp = Math.round(weatherData.main.temp_max);
             const icon = weatherData.weather[0]?.icon ?? '02d';
             return {
                 id: item.id,
                 displayName: item.displayName,
                 fullName: item.fullName,
                 temperature,
+                minTemp,
+                maxTemp,
                 icon,
                 lat,
                 lon,
