@@ -1,9 +1,11 @@
+import { useNavigate } from 'react-router-dom';
 import { SearchBar } from '@features/search-location/ui/SearchBar';
 import { FavoritesList } from '@widgets/favorites-list/ui/FavoritesList';
 import { CurrentWeatherWidget } from '@widgets/current-weather/ui/CurrentWeatherWidget';
 import { useFavorites } from '@features/toggle-favorite/model/useFavorites';
 
 export const MainPage = () => {
+    const navigate = useNavigate();
     const { favoritesSet, favorites, handleToggleFavorite } = useFavorites();
 
     const handleSelectSuggestion = (suggestion: { fullName: string; displayName: string }) => {
@@ -11,7 +13,12 @@ export const MainPage = () => {
     };
 
     const handleFavoriteClick = (id: string) => {
-        // TODO: 즐겨찾기 상세 페이지로 이동
+        const favorite = favorites.find((fav) => fav.id === id);
+        if (favorite && favorite.lat && favorite.lon) {
+            navigate(`/detail/${id}?lat=${favorite.lat}&lon=${favorite.lon}`);
+        } else {
+            navigate(`/detail/${id}`);
+        }
     };
 
     return (

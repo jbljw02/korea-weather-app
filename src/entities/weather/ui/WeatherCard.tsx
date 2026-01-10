@@ -1,4 +1,4 @@
-import { isNotEmptyArray, isNotNil } from '@shared/lib/type-guards';
+import { isEmptyArray, isNotEmptyArray, isNotNil } from '@shared/lib/type-guards';
 import { getWeatherIconSrc } from '@shared/ui/icon/utis';
 import { FavoriteIcon } from '@shared/ui/icon/FavoriteIcon';
 import { LocationName } from './LocationName';
@@ -57,6 +57,7 @@ export const WeatherCard = ({
 
     const weatherIcon = isNotNil(icon) ? getWeatherIconSrc(icon) : '01d';
     const ariaLabel = isFavorite ? '즐겨찾기 제거' : '즐겨찾기 추가';
+    const shouldBreakLine = !hourlyForecast || isEmptyArray(hourlyForecast);
     return (
         <div
             onClick={onClick}
@@ -81,7 +82,7 @@ export const WeatherCard = ({
             <div className="flex items-start justify-between">
                 <div className="flex-1">
                     <h3 className="font-semibold text-gray-800 text-base md:text-lg">
-                        <LocationName location={location} />
+                        <LocationName location={location} shouldBreakLine={shouldBreakLine} />
                     </h3>
                     {description && (
                         <p className="text-sm text-gray-500 mb-2">{description}</p>
