@@ -5,7 +5,7 @@ import { DailyForecast } from '@entities/weather/ui/DailyForecast';
 import { useCurrentWeather, useForecast } from '@entities/weather';
 import { prepareHourlyForecast } from '@entities/weather/lib/prepareHourlyForecast';
 import { prepareDailyForecast } from '@entities/weather/lib/prepareDailyForecast';
-import { useFavoriteCoordinates } from '@entities/favorite';
+import { getFavoriteItems, useFavoriteCoordinates } from '@entities/favorite';
 import { isNil, isNotNil } from '@shared/lib/type-guards';
 import { getLastLocationPart } from '@shared/lib/string';
 
@@ -17,6 +17,8 @@ interface WeatherDetailWidgetProps {
 
 export const WeatherDetailWidget = ({ id, lat: initialLat, lon: initialLon }: WeatherDetailWidgetProps) => {
     const coordinates = useFavoriteCoordinates(id, initialLat, initialLon);
+    const favoriteItems = getFavoriteItems();
+    const favoriteItem = favoriteItems.find((item) => item.id === id);
 
     const lat = coordinates?.lat ?? initialLat;
     const lon = coordinates?.lon ?? initialLon;
@@ -36,7 +38,7 @@ export const WeatherDetailWidget = ({ id, lat: initialLat, lon: initialLon }: We
     const isLoading = isNil(coordinates) || isWeatherLoading || isForecastLoading;
     const hasError = weatherError || forecastError;
 
-    const locationName = getLastLocationPart(id.split('-').join(' '));
+    const locationName = favoriteItem?.displayName ?? getLastLocationPart(id.split('-').join(' '));
     const hourlyForecast = prepareHourlyForecast(forecast);
     const dailyForecast = prepareDailyForecast(forecast);
 

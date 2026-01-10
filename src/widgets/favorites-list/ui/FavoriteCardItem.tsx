@@ -9,9 +9,10 @@ interface FavoriteCardItemProps {
     favorite: FavoriteLocation;
     onCardClick: (id: string) => void;
     onToggleFavorite: (item: DistrictSuggestion) => void;
+    onUpdateDisplayName?: (fullName: string, newDisplayName: string) => void;
 }
 
-export const FavoriteCardItem = ({ favorite, onCardClick, onToggleFavorite }: FavoriteCardItemProps) => {
+export const FavoriteCardItem = ({ favorite, onCardClick, onToggleFavorite, onUpdateDisplayName }: FavoriteCardItemProps) => {
     return (
         <div className="min-w-0 min-h-[170px]">
             {favorite.isLoading ? (
@@ -29,6 +30,7 @@ export const FavoriteCardItem = ({ favorite, onCardClick, onToggleFavorite }: Fa
                     fullName={favorite.fullName}
                     onClick={() => onCardClick(favorite.id)}
                     onToggleFavorite={onToggleFavorite}
+                    onUpdateDisplayName={onUpdateDisplayName}
                 />
             )}
         </div>

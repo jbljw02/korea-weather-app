@@ -7,6 +7,7 @@ interface FavoritesListProps {
     favorites: FavoriteLocation[];
     onCardClick: (id: string) => void;
     onToggleFavorite: (item: DistrictSuggestion) => void;
+    onUpdateDisplayName?: (fullName: string, newDisplayName: string) => void;
 }
 
 const FavoritesListEmpty = () => {
@@ -17,7 +18,7 @@ const FavoritesListEmpty = () => {
     );
 };
 
-export const FavoritesList = ({ favorites, onCardClick, onToggleFavorite }: FavoritesListProps) => {
+export const FavoritesList = ({ favorites, onCardClick, onToggleFavorite, onUpdateDisplayName }: FavoritesListProps) => {
     return (
         <div className="w-full flex-1 flex flex-col">
             <h2 className="text-xl font-semibold text-gray-800 mb-4">즐겨찾기</h2>
@@ -32,6 +33,7 @@ export const FavoritesList = ({ favorites, onCardClick, onToggleFavorite }: Favo
                                 favorite={favorite}
                                 onCardClick={onCardClick}
                                 onToggleFavorite={onToggleFavorite}
+                                onUpdateDisplayName={onUpdateDisplayName}
                             />
                         ))}
                     </div>

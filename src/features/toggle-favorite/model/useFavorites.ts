@@ -4,6 +4,7 @@ import {
     getFavorites,
     getFavoriteItems,
     toggleFavorite as toggleFavoriteStorage,
+    updateFavoriteDisplayName,
     type FavoriteItem,
     type FavoriteLocation
 } from '@entities/favorite';
@@ -99,9 +100,19 @@ export const useFavorites = () => {
         setFavoriteItems(getFavoriteItems());
     }, []);
 
+    const handleUpdateDisplayName = useCallback((fullName: string, newDisplayName: string) => {
+        if (updateFavoriteDisplayName(fullName, newDisplayName)) {
+            setFavoriteItems(getFavoriteItems());
+            toast.success('장소의 이름이 변경되었습니다.');
+        } else {
+            toast.error('장소 이름 변경에 실패했습니다.');
+        }
+    }, []);
+
     return {
         favoritesSet,
         favorites,
         handleToggleFavorite,
+        handleUpdateDisplayName,
     };
 };

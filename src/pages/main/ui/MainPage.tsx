@@ -8,7 +8,7 @@ import { getCoordinatesWithFallback } from '@entities/location/lib/getCoordinate
 
 export const MainPage = () => {
     const navigate = useNavigate();
-    const { favoritesSet, favorites, handleToggleFavorite } = useFavorites();
+    const { favoritesSet, favorites, handleToggleFavorite, handleUpdateDisplayName } = useFavorites();
 
     const handleSelectSuggestion = async (suggestion: { fullName: string; displayName: string }) => {
         try {
@@ -45,7 +45,12 @@ export const MainPage = () => {
                     <CurrentWeatherWidget />
                 </div>
                 <div className="flex-1 flex flex-col">
-                    <FavoritesList favorites={favorites} onCardClick={handleFavoriteClick} onToggleFavorite={handleToggleFavorite} />
+                    <FavoritesList
+                        favorites={favorites}
+                        onCardClick={handleFavoriteClick}
+                        onToggleFavorite={handleToggleFavorite}
+                        onUpdateDisplayName={handleUpdateDisplayName}
+                    />
                 </div>
             </div>
         </div>
