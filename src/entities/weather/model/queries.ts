@@ -1,8 +1,8 @@
 import { useQuery, useQueries } from '@tanstack/react-query';
 import { getCurrentWeather, getForecast } from '../api/getWeather';
 import { isEmptyArray, isNil, isNotNil } from '@shared/lib/type-guards';
-import { getCoordinatesByLocationName } from '@entities/location/api';
-import type { FavoriteItem } from '@shared/lib/localStorage';
+import { getCoordinatesByLocationName } from '@entities/location';
+import type { FavoriteItem } from '@entities/favorite';
 
 export const useCurrentWeather = (lat: number | null, lon: number | null) => {
     return useQuery({
@@ -39,17 +39,29 @@ export const useFavoriteWeathers = (favoriteItems: FavoriteItem[]) => {
         queries: favoriteItems.map((item) => ({
             queryKey: ['favoriteWeather', item.fullName] as const,
             queryFn: async () => {
-                const coordinates = await getCoordinatesByLocationName(item.displayName, 1);
-                if (isEmptyArray(coordinates)) {
-                    return null;
+                // 저장된 좌표가 있으면 사용
+                if (isNotNil(item.lat) && isNotNil(item.lon) && item.lat !== 0 && item.lon !== 0) {
+                    return getCurrentWeather(item.lat, item.lon);
                 }
 
-                const { lat, lon } = coordinates[0];
-                if (isNil(lat) || isNil(lon)) {
+                // 좌표가 없으면 검색
+                try {
+                    const locationName = item.displayName || item.fullName.replace(/-/g, ' ');
+                    const coordinates = await getCoordinatesByLocationName(locationName, 1);
+                    if (isEmptyArray(coordinates)) {
+                        return null;
+                    }
+
+                    const { lat, lon } = coordinates[0];
+                    if (isNil(lat) || isNil(lon)) {
+                        return null;
+                    }
+
+                    return getCurrentWeather(lat, lon);
+                } catch (error) {
+                    console.error(`Error fetching weather for ${item.fullName}:`, error);
                     return null;
                 }
-
-                return getCurrentWeather(lat, lon);
             },
             enabled: favoriteItems.length > 0,
             retry: 3,

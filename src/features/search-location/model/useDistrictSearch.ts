@@ -2,11 +2,7 @@ import { useState, useMemo, useRef, useEffect } from 'react';
 import { searchDistricts } from '@entities/district/lib';
 import { isEmptyArray } from '@shared/lib/type-guards';
 import { isEmptyString } from '@shared/lib/string';
-
-interface DistrictSuggestion {
-    fullName: string;
-    displayName: string;
-}
+import type { DistrictSuggestion } from '@entities/district';
 
 interface UseDistrictSearchProps {
     onSelectSuggestion: (suggestion: DistrictSuggestion) => void;

@@ -1,6 +1,7 @@
 import { isNotEmptyArray, isNotNil } from '@shared/lib/type-guards';
 import { getWeatherIconSrc } from '@shared/ui/icon/utis';
 import { FavoriteIcon } from '@shared/ui/icon/FavoriteIcon';
+import type { DistrictSuggestion } from '@entities/district';
 
 interface HourlyForecastItem {
     time: string;
@@ -10,14 +11,16 @@ interface HourlyForecastItem {
 
 interface WeatherCardProps {
     location: string;
-    temperature: number;
+    temperature?: number;
     minTemp?: number;
     maxTemp?: number;
-    icon: string;
+    icon?: string;
     description?: string;
     hourlyForecast?: HourlyForecastItem[];
     isFavorite?: boolean;
+    fullName?: string;
     onClick?: () => void;
+    onToggleFavorite?: (item: DistrictSuggestion) => void;
 }
 
 export const WeatherCard = ({
@@ -29,7 +32,9 @@ export const WeatherCard = ({
     description,
     hourlyForecast,
     isFavorite = false,
+    fullName,
     onClick,
+    onToggleFavorite,
 }: WeatherCardProps) => {
     const formatTime = (time: string, index: number) => {
         if (index === 0) {
@@ -39,14 +44,36 @@ export const WeatherCard = ({
         return time;
     };
 
+    const handleFavoriteClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (onToggleFavorite && fullName) {
+            onToggleFavorite({
+                fullName,
+                displayName: location,
+            });
+        }
+    };
+
+    const weatherIcon = isNotNil(icon) ? getWeatherIconSrc(icon) : '01d';
+    const ariaLabel = isFavorite ? '즐겨찾기 제거' : '즐겨찾기 추가';
     return (
         <div
             onClick={onClick}
             className={`h-full relative bg-white rounded-2xl shadow-sm p-6 ${onClick && 'cursor-pointer hover:shadow-md transition-shadow'}`}
         >
-            {isFavorite && (
+            {(isFavorite || onToggleFavorite) && (
                 <div className="absolute top-4 right-4">
-                    <FavoriteIcon className="w-5 h-5 text-blue-500" filled={true} />
+                    <button
+                        type="button"
+                        onClick={handleFavoriteClick}
+                        className="p-1 hover:bg-gray-100 rounded transition-colors"
+                        aria-label={ariaLabel}
+                    >
+                        <FavoriteIcon
+                            className={`w-5 h-5 ${isFavorite ? 'text-blue-500' : 'text-gray-400'}`}
+                            filled={isFavorite}
+                        />
+                    </button>
                 </div>
             )}
 
@@ -60,7 +87,7 @@ export const WeatherCard = ({
                     )}
                 </div>
                 <img
-                    src={getWeatherIconSrc(icon)}
+                    src={weatherIcon}
                     alt="weather"
                     className="w-12 h-12 md:w-16 md:h-16"
                 />

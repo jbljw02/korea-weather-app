@@ -1,16 +1,12 @@
 import { WeatherCard } from '@entities/weather/ui/WeatherCard';
 import { isEmptyArray } from '@shared/lib/type-guards';
-
-interface FavoriteLocation {
-    id: string;
-    name: string;
-    temperature: number;
-    icon: string;
-}
+import type { FavoriteLocation } from '@entities/favorite';
+import type { DistrictSuggestion } from '@entities/district';
 
 interface FavoritesListProps {
     favorites: FavoriteLocation[];
-    onCardClick?: (id: string) => void;
+    onCardClick: (id: string) => void;
+    onToggleFavorite: (item: DistrictSuggestion) => void;
 }
 
 const FavoritesListEmpty = () => {
@@ -21,7 +17,7 @@ const FavoritesListEmpty = () => {
     );
 };
 
-export const FavoritesList = ({ favorites, onCardClick }: FavoritesListProps) => {
+export const FavoritesList = ({ favorites, onCardClick, onToggleFavorite }: FavoritesListProps) => {
     return (
         <div className="w-full flex-1 flex flex-col">
             <h2 className="text-xl font-semibold text-gray-800 mb-4">즐겨찾기</h2>
@@ -33,11 +29,13 @@ export const FavoritesList = ({ favorites, onCardClick }: FavoritesListProps) =>
                         {favorites.map((favorite) => (
                             <WeatherCard
                                 key={favorite.id}
-                                location={favorite.name}
+                                location={favorite.displayName}
                                 temperature={favorite.temperature}
                                 icon={favorite.icon}
                                 isFavorite={true}
-                                onClick={() => onCardClick?.(favorite.id)}
+                                fullName={favorite.fullName}
+                                onClick={() => onCardClick(favorite.id)}
+                                onToggleFavorite={onToggleFavorite}
                             />
                         ))}
                     </div>
