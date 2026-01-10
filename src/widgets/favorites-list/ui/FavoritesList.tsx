@@ -1,8 +1,7 @@
-import { WeatherCard } from '@entities/weather/ui/WeatherCard';
-import { WeatherCardLoading } from '@entities/weather/ui/WeatherCardLoading';
 import { isEmptyArray } from '@shared/lib/type-guards';
 import type { FavoriteLocation } from '@entities/favorite';
 import type { DistrictSuggestion } from '@entities/district';
+import { FavoriteCardItem } from './FavoriteCardItem';
 
 interface FavoritesListProps {
     favorites: FavoriteLocation[];
@@ -28,21 +27,12 @@ export const FavoritesList = ({ favorites, onCardClick, onToggleFavorite }: Favo
                 ) : (
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-fr">
                         {favorites.map((favorite) => (
-                            <div key={favorite.id} className="min-w-0 min-h-[170px]">
-                                {favorite.isLoading ? (
-                                    <WeatherCardLoading />
-                                ) : (
-                                    <WeatherCard
-                                        location={favorite.displayName}
-                                        temperature={favorite.temperature}
-                                        icon={favorite.icon}
-                                        isFavorite={true}
-                                        fullName={favorite.fullName}
-                                        onClick={() => onCardClick(favorite.id)}
-                                        onToggleFavorite={onToggleFavorite}
-                                    />
-                                )}
-                            </div>
+                            <FavoriteCardItem
+                                key={favorite.id}
+                                favorite={favorite}
+                                onCardClick={onCardClick}
+                                onToggleFavorite={onToggleFavorite}
+                            />
                         ))}
                     </div>
                 )

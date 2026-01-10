@@ -23,8 +23,8 @@ export const useFavorites = () => {
             const weatherData = query?.data;
             const isLoading = query?.isLoading ?? false;
             const storedItem = getFavoriteItems().find((fav) => fav.fullName === item.fullName);
-            const lat = storedItem?.lat ?? 0;
-            const lon = storedItem?.lon ?? 0;
+            const lat = storedItem?.lat;
+            const lon = storedItem?.lon;
 
             if (isNil(weatherData)) {
                 return {
@@ -62,8 +62,8 @@ export const useFavorites = () => {
             }
         } else {
             const coordinates = await getCoordinatesWithFallback(param.fullName);
-            const lat = coordinates?.lat ?? 0;
-            const lon = coordinates?.lon ?? 0;
+            const lat = coordinates?.lat;
+            const lon = coordinates?.lon;
 
             toggleFavoriteStorage({
                 id: param.fullName,
