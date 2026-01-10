@@ -1,7 +1,7 @@
 import { isEmptyArray, isNotEmptyArray, isNotNil } from '@shared/lib/type-guards';
 import { getWeatherIconSrc } from '@shared/ui/icon/utis';
 import { FavoriteIcon } from '@shared/ui/icon/FavoriteIcon';
-import { LocationName } from './LocationName';
+import { EditableLocationName } from './EditableLocationName';
 import type { DistrictSuggestion } from '@entities/district';
 
 interface HourlyForecastItem {
@@ -22,6 +22,7 @@ interface WeatherCardProps {
     fullName?: string;
     onClick?: () => void;
     onToggleFavorite?: (item: DistrictSuggestion) => void;
+    onUpdateDisplayName?: (fullName: string, newDisplayName: string) => void;
 }
 
 export const WeatherCard = ({
@@ -36,6 +37,7 @@ export const WeatherCard = ({
     fullName,
     onClick,
     onToggleFavorite,
+    onUpdateDisplayName,
 }: WeatherCardProps) => {
     const formatTime = (time: string, index: number) => {
         if (index === 0) {
@@ -81,9 +83,13 @@ export const WeatherCard = ({
 
             <div className="flex items-start justify-between">
                 <div className="flex-1">
-                    <h3 className="font-semibold text-gray-800 text-base md:text-lg">
-                        <LocationName location={location} shouldBreakLine={shouldBreakLine} />
-                    </h3>
+                    <EditableLocationName
+                        location={location}
+                        isFavorite={isFavorite}
+                        fullName={fullName}
+                        shouldBreakLine={shouldBreakLine}
+                        onUpdateDisplayName={onUpdateDisplayName}
+                    />
                     {description && (
                         <p className="text-sm text-gray-500 mb-2">{description}</p>
                     )}
@@ -100,7 +106,7 @@ export const WeatherCard = ({
             </div>
 
             {isNotNil(minTemp) && isNotNil(maxTemp) && (
-                <div className="text-sm text-gray-500 mb-6">
+                <div className="text-sm text-gray-500">
                     최저 {Math.round(minTemp)}° 최고 {Math.round(maxTemp)}°
                 </div>
             )}

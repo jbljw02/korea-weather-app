@@ -1,3 +1,4 @@
+import { isNil } from '@shared/lib/type-guards';
 import type { FavoriteItem } from '../model/types';
 
 const FAVORITES_STORAGE_KEY = 'weather-app-favorites';
@@ -40,6 +41,22 @@ export const toggleFavorite = (item: FavoriteItem): boolean => {
         }
 
         favorites.push(item);
+        localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(favorites));
+        return true;
+    } catch {
+        return false;
+    }
+};
+
+export const updateFavoriteDisplayName = (fullName: string, newDisplayName: string): boolean => {
+    try {
+        const favorites = getFavoriteItems();
+        const item = favorites.find((fav) => fav.fullName === fullName);
+        if (isNil(item)) {
+            return false;
+        }
+
+        item.displayName = newDisplayName;
         localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(favorites));
         return true;
     } catch {

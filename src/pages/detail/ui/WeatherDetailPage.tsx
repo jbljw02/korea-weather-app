@@ -2,6 +2,7 @@ import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { WeatherDetailWidget } from '@widgets/weather-detail/ui/WeatherDetailWidget';
 import { ArrowLeftIcon } from '@shared/ui/icon/ArrowLeftIcon';
 import { isNil } from '@shared/lib/type-guards';
+import { WeatherDetailError } from '../../../entities/weather/ui/WeatherDetailError';
 
 export const WeatherDetailPage = () => {
     const { id } = useParams<{ id: string }>();
@@ -12,11 +13,11 @@ export const WeatherDetailPage = () => {
     const lon = searchParams.get('lon');
     const parsedLat = lat ? parseFloat(lat) : null;
     const parsedLon = lon ? parseFloat(lon) : null;
-    
+
     if (isNil(id) || isNil(lat) || isNil(lon)) {
-        return null;
+        return <WeatherDetailError />;
     }
-    
+
     return (
         <div className="min-h-screen w-full bg-gray-50 px-4 py-6 md:px-8 md:py-8">
             <div className="max-w-4xl mx-auto w-full flex flex-col gap-6">
