@@ -1,12 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
-import { LocationName } from './LocationName';
 import { EditIcon } from '@shared/ui/icon/EditIcon';
 
 interface EditableLocationNameProps {
     location: string;
     isFavorite: boolean;
     fullName?: string;
-    shouldBreakLine: boolean;
     onUpdateDisplayName?: (fullName: string, newDisplayName: string) => void;
 }
 
@@ -14,7 +12,6 @@ export const EditableLocationName = ({
     location,
     isFavorite,
     fullName,
-    shouldBreakLine,
     onUpdateDisplayName,
 }: EditableLocationNameProps) => {
     const [isEditing, setIsEditing] = useState(false);
@@ -80,7 +77,7 @@ export const EditableLocationName = ({
     return (
         <div className="flex items-center gap-1">
             <h3 className="font-semibold text-gray-800 text-base md:text-lg">
-                <LocationName location={location} shouldBreakLine={shouldBreakLine} />
+                {location}
             </h3>
             {isFavorite && onUpdateDisplayName && (
                 <button
