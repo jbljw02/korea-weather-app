@@ -14,7 +14,7 @@ interface FavoriteCardItemProps {
 
 export const FavoriteCardItem = ({ favorite, onCardClick, onToggleFavorite, onUpdateDisplayName }: FavoriteCardItemProps) => {
     return (
-        <div className="min-w-0 min-h-[170px]">
+        <div className="min-w-0 min-h-[170px] md:min-h-[200px]">
             {favorite.isLoading ? (
                 <WeatherCardLoading />
             ) : isNil(favorite.lat) || isNil(favorite.lon) ? (
