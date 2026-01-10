@@ -31,6 +31,7 @@ export const SearchedSuggestions = ({
                     <div
                         key={key}
                         className="flex items-center px-4 py-3 hover:bg-gray-50 transition-colors first:rounded-t-lg last:rounded-b-lg"
+                        onPointerDown={(e) => e.preventDefault()}
                     >
                         <button
                             type="button"
