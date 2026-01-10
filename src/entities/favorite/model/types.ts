@@ -11,4 +11,5 @@ export interface FavoriteLocation extends FavoriteItem {
     icon?: string;
     lat: number;
     lon: number;
+    isLoading?: boolean;
 }

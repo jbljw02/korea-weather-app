@@ -1,4 +1,4 @@
-import { getCoordinatesByLocationName } from '../api';
+import { getCoordinatesByLocationName } from '..';
 import { isNotEmptyArray } from '@shared/lib/type-guards';
 
 interface LatLon {

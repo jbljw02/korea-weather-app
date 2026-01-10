@@ -19,7 +19,9 @@ export const useFavorites = () => {
 
     const favorites = useMemo<FavoriteLocation[]>(() => {
         return favoriteItems.map((item, index) => {
-            const weatherData = weatherQueries[index].data;
+            const query = weatherQueries[index];
+            const weatherData = query?.data;
+            const isLoading = query?.isLoading ?? false;
             const storedItem = getFavoriteItems().find((fav) => fav.fullName === item.fullName);
             const lat = storedItem?.lat ?? 0;
             const lon = storedItem?.lon ?? 0;
@@ -31,6 +33,7 @@ export const useFavorites = () => {
                     fullName: item.fullName,
                     lat,
                     lon,
+                    isLoading,
                 };
             }
 
@@ -44,11 +47,11 @@ export const useFavorites = () => {
                 icon,
                 lat,
                 lon,
+                isLoading,
             };
         });
     }, [favoriteItems, weatherQueries]);
 
-    // useCallback: SearchBar의 불필요한 재렌더링 방지
     const handleToggleFavorite = useCallback(async (param: DistrictSuggestion) => {
         const isRemoving = favoritesSet.has(param.fullName);
 
@@ -69,8 +72,8 @@ export const useFavorites = () => {
                 lat,
                 lon,
             });
-
         }
+
         setFavoritesSet((prevSet) => {
             const newSet = new Set(prevSet);
             if (newSet.has(param.fullName)) {

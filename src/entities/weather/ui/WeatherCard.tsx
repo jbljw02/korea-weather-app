@@ -1,6 +1,7 @@
 import { isNotEmptyArray, isNotNil } from '@shared/lib/type-guards';
 import { getWeatherIconSrc } from '@shared/ui/icon/utis';
 import { FavoriteIcon } from '@shared/ui/icon/FavoriteIcon';
+import { getLastLocationPart } from '@shared/lib/string';
 import type { DistrictSuggestion } from '@entities/district';
 
 interface HourlyForecastItem {
@@ -59,7 +60,7 @@ export const WeatherCard = ({
     return (
         <div
             onClick={onClick}
-            className={`h-full relative bg-white rounded-2xl shadow-sm p-6 ${onClick && 'cursor-pointer hover:shadow-md transition-shadow'}`}
+            className={`h-full relative bg-white rounded-2xl shadow-sm p-6 flex flex-col overflow-hidden ${onClick && 'cursor-pointer hover:shadow-md transition-shadow'}`}
         >
             {(isFavorite || onToggleFavorite) && (
                 <div className="absolute top-4 right-4">
@@ -77,11 +78,9 @@ export const WeatherCard = ({
                 </div>
             )}
 
-            <div className="flex items-start justify-between mb-4">
+            <div className="flex items-start justify-between">
                 <div className="flex-1">
-                    <div className="mb-2">
-                        <h3 className="font-semibold text-gray-800 text-base md:text-lg">{location}</h3>
-                    </div>
+                    <h3 className="font-semibold text-gray-800 text-base md:text-lg">{getLastLocationPart(location)}</h3>
                     {description && (
                         <p className="text-sm text-gray-500 mb-2">{description}</p>
                     )}
@@ -93,7 +92,7 @@ export const WeatherCard = ({
                 />
             </div>
 
-            <div className="font-light text-gray-800 text-4xl md:text-5xl mb-2">
+            <div className="font-light text-gray-800 text-4xl md:text-5xl mb-2 mt-auto md:mt-0">
                 {temperature}°
             </div>
 

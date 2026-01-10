@@ -17,3 +17,14 @@ export function isNotEmptyString(
 ): value is string {
     return value != null && value !== '';
 }
+
+/**
+ * 위치 이름에서 마지막 단어만 추출
+ * 예: "서울특별시 성동구 홍익동" -> "홍익동"
+ * @param location 전체 위치 이름
+ * @returns 마지막 단어
+ */
+export const getLastLocationPart = (location: string): string => {
+    const parts = location.trim().split(/\s+/);
+    return parts.length > 0 ? parts[parts.length - 1] : location;
+};
