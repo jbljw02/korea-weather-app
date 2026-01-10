@@ -7,4 +7,4 @@ export type {
     ForecastItem,
     ForecastResponse,
 } from './types';
-export { useCurrentWeather, useForecast } from './queries';
+export { useCurrentWeather, useForecast, useFavoriteWeathers } from './queries';
