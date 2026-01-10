@@ -7,7 +7,7 @@ const FAVORITES_STORAGE_KEY = 'weather-app-favorites';
 export const getFavorites = (): Set<string> => {
     try {
         const stored = localStorage.getItem(FAVORITES_STORAGE_KEY);
-        if (!stored) {
+        if (isNil(stored)) {
             return new Set();
         }
         const favorites: FavoriteItem[] = JSON.parse(stored);
@@ -21,7 +21,7 @@ export const getFavorites = (): Set<string> => {
 export const getFavoriteItems = (): FavoriteItem[] => {
     try {
         const stored = localStorage.getItem(FAVORITES_STORAGE_KEY);
-        if (!stored) {
+        if (isNil(stored)) {
             return [];
         }
         return JSON.parse(stored);
