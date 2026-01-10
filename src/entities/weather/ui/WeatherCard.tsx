@@ -1,7 +1,7 @@
 import { isNotEmptyArray, isNotNil } from '@shared/lib/type-guards';
 import { getWeatherIconSrc } from '@shared/ui/icon/utis';
 import { FavoriteIcon } from '@shared/ui/icon/FavoriteIcon';
-import { getLastLocationPart } from '@shared/lib/string';
+import { LocationName } from './LocationName';
 import type { DistrictSuggestion } from '@entities/district';
 
 interface HourlyForecastItem {
@@ -80,7 +80,9 @@ export const WeatherCard = ({
 
             <div className="flex items-start justify-between">
                 <div className="flex-1">
-                    <h3 className="font-semibold text-gray-800 text-base md:text-lg">{getLastLocationPart(location)}</h3>
+                    <h3 className="font-semibold text-gray-800 text-base md:text-lg">
+                        <LocationName location={location} />
+                    </h3>
                     {description && (
                         <p className="text-sm text-gray-500 mb-2">{description}</p>
                     )}
