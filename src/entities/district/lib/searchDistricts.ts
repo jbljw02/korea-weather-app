@@ -15,7 +15,7 @@ export const searchDistricts = (
     const districts = loadDistricts();
 
     // 초성 검색 여부 판단
-    const isChoseongQuery = !/[가-힣]/.test(normalizedQuery);
+    const isChoseongQuery = /^[ㄱ-ㅎ\s]+$/.test(normalizedQuery);
 
     const matched = districts.filter((district) => {
         if (isChoseongQuery) {
