@@ -404,5 +404,5 @@ export const updateFavoriteDisplayName = (fullName: string, newDisplayName: stri
 
 **선택 이유:**
 - 매우 가벼운 번들 사이즈(약 5KB)
-- Headless 기반 UI 커스터마이징 100% 가능(<div> 태그 사용 등)
+- Headless 기반 UI 커스터마이징 100% 가능(`<div>` 태그 사용 등)
 - 별도의 CSS 파일 import 불필요
