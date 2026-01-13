@@ -406,3 +406,14 @@ export const updateFavoriteDisplayName = (fullName: string, newDisplayName: stri
 - 매우 가벼운 번들 사이즈(약 5KB)
 - Headless 기반 UI 커스터마이징 100% 가능(`<div>` 태그 사용 등)
 - 별도의 CSS 파일 import 불필요
+
+### 9. react-spinners
+
+**사용 사례:**
+- 상세 페이지 이동 시 로딩 스피너 출력
+
+**선택 이유:**
+- 리액트의 spinner 관련 라이브러리 중 가장 큰 생태계
+- props 기반 다양한 커스터마이징 지원
+- 스피너 포함 다양한 프리셋 제공
+
