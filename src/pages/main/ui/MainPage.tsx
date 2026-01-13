@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { SearchBar } from '@features/search-location/ui/SearchBar';
@@ -5,12 +6,15 @@ import { FavoritesList } from '@widgets/favorites-list/ui/FavoritesList';
 import { CurrentWeatherWidget } from '@widgets/current-weather/ui/CurrentWeatherWidget';
 import { useFavorites } from '@features/toggle-favorite/model/useFavorites';
 import { getCoordinatesWithFallback } from '@entities/location/lib/getCoordinatesWithFallback';
+import { LoadingOverlay } from '@shared/ui/LoadingOverlay';
 
 export const MainPage = () => {
     const navigate = useNavigate();
     const { favoritesSet, favorites, handleToggleFavorite, handleUpdateDisplayName } = useFavorites();
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleSelectSuggestion = async (suggestion: { fullName: string; displayName: string }) => {
+        setIsLoading(true);
         try {
             const locations = await getCoordinatesWithFallback(suggestion.fullName);
             if (locations) {
@@ -21,6 +25,8 @@ export const MainPage = () => {
             }
         } catch (error) {
             toast.error('장소 정보를 가져오는 중 오류가 발생했습니다.');
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -34,7 +40,8 @@ export const MainPage = () => {
     };
 
     return (
-        <div className="min-h-screen w-full bg-gray-50 px-4 py-6 md:px-8 md:py-8 flex flex-col">
+        <div className="min-h-screen w-full bg-gray-50 px-4 py-6 md:px-8 md:py-8 flex flex-col relative">
+            {isLoading && <LoadingOverlay />}
             <div className="max-w-7xl mx-auto w-full flex flex-col">
                 <SearchBar
                     onSelectSuggestion={handleSelectSuggestion}

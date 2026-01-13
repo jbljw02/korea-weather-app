@@ -18,7 +18,11 @@ export const FavoriteCardItem = ({ favorite, onCardClick, onToggleFavorite, onUp
             {favorite.isLoading ? (
                 <WeatherCardLoading />
             ) : isNil(favorite.lat) || isNil(favorite.lon) ? (
-                <FavoriteCardError displayName={favorite.displayName} />
+                <FavoriteCardError
+                    displayName={favorite.displayName}
+                    fullName={favorite.fullName}
+                    onToggleFavorite={onToggleFavorite}
+                />
             ) : (
                 <WeatherCard
                     location={favorite.displayName}
