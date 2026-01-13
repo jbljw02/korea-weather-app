@@ -111,6 +111,7 @@ npm run dev
 ### Utilities
 - **es-hangul 2.3.8** - 한글 초성 검색
 - **react-hot-toast 2.4.1** - 토스트 알림
+- **react-spinners 0.17.0** - 로딩 오버레이
 
 ## 기술적 의사결정
 
